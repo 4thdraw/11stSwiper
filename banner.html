@@ -130,6 +130,10 @@
         #allbtn:hover:after {
             content: "\F121";
         } */
+
+        #shopBanner {
+            background-color: red;
+        }
     </style>
 </head>
 
@@ -195,11 +199,11 @@
 
     <script>
         var bgdata = "";
-        var swiperShop = new Swiper('#shopBanner .swiper', {
+        const swiperShop = new Swiper('#shopBanner .swiper', {
             loop: true,
             effect: 'fade',
             autoplay: {
-                delay: 4000
+                delay: 3000
             },
 
             pagination: {
@@ -211,30 +215,43 @@
                 nextEl: '#shopBanner .swiper-button-next',
                 prevEl: '#shopBanner .swiper-button-prev',
             },
+            on: {
+                activeIndexChange: function () {
+
+                    if (this.realIndex > 0) {
+                        bgdata = document.querySelector("#shopBanner .swiper-pagination .swiper-pagination-current").textContent
+
+
+                        console.log(Number(bgdata) - 1)
+                    }
+                },
+            },
+
 
         });
 
-        swiperShop.on('slideChange', function () {
-            console.log(swiperShop.slides[this.realIndex].dataset.color, this)
-            bgdata = swiperShop.slides[this.realIndex].dataset.color;
-            document.querySelector("#shopBanner").style.backgroundColor = bgdata;
-        });
+        // let count = 0;
 
-        var togglestatu = true; // var로 변수선언을 해줄것 다른 스코프에서 쓰일 예정이므로
+        // swiperShop.on('activeIndexChange', function () {
+
+        //     // activeIndexChange
+        //     count = swiperShop.slides[this.realIndex].dataset.swiperSlideIndex;
+        //     console.log(swiperShop.slides[count].dataset.color, this.realIndex, count, swiperShop.slides[this.realIndex].dataset)
+        //     //document.querySelector("#shopBanner").style.backgroundColor = swiperShop.slides[count].dataset.color;
+        // });
+
+        var togglestatu = true;
 
         document.querySelector(".toggle").addEventListener("click", function () {
 
             this.classList.toggle('stop');
-            // this가 태그객체임이 확인되어 그대로 클래스를 주었다가 빼았다가 함
+
 
             togglestatu = this.classList.contains('stop');
-            // 클래스명이 포함되어 있으면 true, 아니면 false
 
             if (togglestatu) {
                 swiperShop.autoplay.stop();
-                // 반드시  swiper변수명을 var 로 수정할 껏
-                // const 로 선언된 변수를 인식할 수가 없음 
-                // 인식 범위가 넓은 var로 수정해야만 실행됨
+
             } else {
                 swiperShop.autoplay.start();
             }
